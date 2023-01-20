@@ -4,6 +4,14 @@ from sqlalchemy.orm import sessionmaker
 import json
 import time
 from .models import Base, Business, Photo, Category
+from datetime import datetime, date
+
+def generate_slug(name: str, address: str) -> str:
+    name_list = name.split(" ")
+    address_list = address.split(" ")[:2]
+    adress_slug = "-".join(address_list)
+    final_str = "-".join(name_list) + "-" + f"{adress_slug}"
+    return final_str.replace("ö", "o").replace("ä", "a").replace("ü","u").replace("õ","o")
 
 
 class Scraper:
@@ -41,7 +49,8 @@ class Scraper:
                         rating=place.get("rating", None),
                         address=place["formatted_address"],
                         price_level=place.get("price_level", None),
-                        place_id=place.get("place_id")
+                        place_id=place.get("place_id"),
+                        slug=generate_slug(place["name"],place["formatted_address"]).lower()
                     )
                     for category in place.get("types", []):
                         existing_category = self.session.query(Category).filter_by(name=category).scalar()

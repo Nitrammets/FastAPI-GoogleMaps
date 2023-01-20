@@ -1,8 +1,13 @@
 from sqlalchemy import Column, String, Integer, Sequence, Float, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import relationship
+import re
 
 Base = declarative_base()
+
+
+
 
 class Category(Base):
     __tablename__ = "categories"
@@ -29,6 +34,8 @@ class Business(Base):
     price_level = Column(Integer)
     categories = relationship("Category", secondary="business_categories")
     photos = relationship("Photo", secondary="business_photos")
+    slug = Column(String, unique=True)
+
 
 class BusinessCategory(Base):
     __tablename__ = "business_categories"
