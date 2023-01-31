@@ -17,7 +17,7 @@ def generate_slug(name: str, address: str) -> str:
 class Scraper:
     def __init__(self) -> None:
         self.base_url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
-        self.api_key = "AIzaSyBj8UABt5bsaMI_RoywqcVUZRdgBn5AJ5U"
+        self.api_key = ""
         self.engine = create_engine('sqlite:///./businesses.db')
         Base.metadata.create_all(self.engine)
         self.session = sessionmaker(bind=self.engine)()
